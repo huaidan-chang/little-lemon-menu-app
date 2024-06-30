@@ -36,7 +36,7 @@ struct OurDishes: View {
                                     }
                             }
                         }
-                        // add the search bar modifier here
+                        .searchable(text: $searchText, prompt: "search...")
                     }
             }
             
@@ -61,6 +61,14 @@ struct OurDishes: View {
                    }
             
         }
+    }
+    
+    func buildPredicate() -> NSPredicate {
+        return searchText == "" ? NSPredicate(value: true) : NSPredicate(format: "name CONTAINS[cd] %@", searchText)
+    }
+    
+    func buildSortDescriptors() -> [NSSortDescriptor] {
+        return [NSSortDescriptor(key: "name", ascending: true, selector: #selector(NSString.localizedStandardCompare))]
     }
 }
 
